@@ -567,6 +567,19 @@ changeSide ();
     item.classList.add ('selected');
 });
 
+
+setInterval (function () {
+    let items = document.querySelectorAll ('input');
+    let view = Math.trunc (Math.random () * items.length);
+    items[view].checked = true;
+    changeSide ();
+}, 2000);
+
+
+
+
+
+
 </script>
 
 </html>
