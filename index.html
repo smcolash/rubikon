@@ -572,6 +572,7 @@ setInterval (function () {
     let items = document.querySelectorAll ('input');
     let view = Math.trunc (Math.random () * items.length);
     items[view].checked = true;
+    console.log ('tick');
     changeSide ();
 }, 2000);
 
