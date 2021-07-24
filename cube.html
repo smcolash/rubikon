@@ -1,0 +1,572 @@
+<html>
+
+<head>
+
+  <!--
+       OOO
+       OOO
+       OOO
+   GGG RRR WWW
+   GGG RRR WWW
+   GGG RRR WWW
+       YYY
+       YYY
+       YYY
+       BBB
+       BBB
+       BBB
+  -->
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: lightgray;
+}
+
+.scene {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+  margin: 150px;
+  padding: 150px;
+  perspective: 1000px;
+}
+
+.cube {
+  width: 0px;
+  height: 0px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.cube.show-red {
+  transform: rotateY(0deg);
+}
+
+.cube.show-white {
+  transform: rotateY(-90deg);
+}
+
+.cube.show-blue {
+  transform: rotateY(-180deg);
+}
+
+.cube.show-green {
+  transform: rotateY(90deg);
+}
+
+.cube.show-orange {
+  transform: rotateX(-90deg);
+}
+
+.cube.show-yellow {
+  transform: rotateX(90deg);
+}
+
+.cube.show-iso {
+  transform: rotateX(45deg) rotateY(0deg) rotateZ(45deg);
+}
+
+@keyframes constant-rotation {
+  from {
+    transform: rotateX(0deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(360deg) rotateZ(360deg);
+  }
+}
+
+.spinning {
+  animation-name: constant-rotation;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+}
+
+.cube .face {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 4px solid black;
+  line-height: 100px;
+  font-size: 40px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.selected {
+}
+
+.red {
+  background: red;
+  transform: rotateY(  0deg) translateZ(50px);
+}
+
+.white {
+  background: white;
+  transform: rotateY( 90deg) translateZ(50px);
+}
+
+.blue {
+  background: blue;
+  transform: rotateY(180deg) translateZ(50px);
+}
+
+.green {
+  background: green;
+  transform: rotateY(-90deg) translateZ(50px);
+}
+
+.orange {
+  background: orange;
+  transform: rotateX( 90deg) translateZ(50px);
+}
+
+.yellow {
+  background: yellow;
+  transform: rotateX(-90deg) translateZ(50px);
+}
+
+.unit {
+  transform-style: preserve-3d;
+}
+
+.b111 {
+  transform: translateX(-150px) translateY(-150px) translateZ(-100px);
+}
+
+.b211 {
+  transform: translateX(-50px) translateY(-150px) translateZ(-100px);
+}
+
+.b311 {
+  transform: translateX(50px) translateY(-150px) translateZ(-100px);
+}
+
+.b121 {
+  transform: translateX(-150px) translateY(-50px) translateZ(-100px);
+}
+
+.b221 {
+  transform: translateX(-50px) translateY(-50px) translateZ(-100px);
+}
+
+.b321 {
+  transform: translateX(50px) translateY(-50px) translateZ(-100px);
+}
+
+.b131 {
+  transform: translateX(-150px) translateY(50px) translateZ(-100px);
+}
+
+.b231 {
+  transform: translateX(-50px) translateY(50px) translateZ(-100px);
+}
+
+.b331 {
+  transform: translateX(50px) translateY(50px) translateZ(-100px);
+}
+
+.b112 {
+  transform: translateX(-150px) translateY(-150px) translateZ(0px);
+}
+
+.b212 {
+  transform: translateX(-50px) translateY(-150px) translateZ(0px);
+}
+
+.b312 {
+  transform: translateX(50px) translateY(-150px) translateZ(0px);
+}
+
+.b122 {
+  transform: translateX(-150px) translateY(-50px) translateZ(0px);
+}
+
+.b222 {
+  transform: translateX(-50px) translateY(-50px) translateZ(0px);
+}
+
+.b322 {
+  transform: translateX(50px) translateY(-50px) translateZ(0px);
+}
+
+.b132 {
+  transform: translateX(-150px) translateY(50px) translateZ(0px);
+}
+
+.b232 {
+  transform: translateX(-50px) translateY(50px) translateZ(0px);
+}
+
+.b332 {
+  transform: translateX(50px) translateY(50px) translateZ(0px);
+}
+
+.b113 {
+  transform: translateX(-150px) translateY(-150px) translateZ(100px);
+}
+
+.b213 {
+  transform: translateX(-50px) translateY(-150px) translateZ(100px);
+}
+
+.b313 {
+  transform: translateX(50px) translateY(-150px) translateZ(100px);
+}
+
+.b123 {
+  transform: translateX(-150px) translateY(-50px) translateZ(100px);
+}
+
+.b223 {
+  transform: translateX(-50px) translateY(-50px) translateZ(100px);
+}
+
+.b323 {
+  transform: translateX(50px) translateY(-50px) translateZ(100px);
+}
+
+.b133 {
+  transform: translateX(-150px) translateY(50px) translateZ(100px);
+}
+
+.b233 {
+  transform: translateX(-50px) translateY(50px) translateZ(100px);
+}
+
+.b333 {
+  transform: translateX(50px) translateY(50px) translateZ(100px);
+}
+
+label {
+  margin-right: 10px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="scene">
+  <div class="cube">
+
+    <div class="unit b111">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b211">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b311">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b121">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b221">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b321">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b131">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b231">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b331">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b112">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+
+    <div class="unit b212">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b312">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b122">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b222">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b322">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b132">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b232">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b332">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b113">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b213">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b313">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b123">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b223">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b323">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b133">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b233">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+    <div class="unit b333">
+      <div class="cube face red"></div>
+      <div class="cube face blue"></div>
+      <div class="cube face white"></div>
+      <div class="cube face green"></div>
+      <div class="cube face orange"></div>
+      <div class="cube face yellow"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<p class="radio-group">
+  <label>
+    <input type="radio" name="rotate-cube-side" value="red"/> front
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="white" /> right
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="blue" /> back
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="green" /> left
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="orange" /> top
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="yellow" /> bottom
+  </label>
+  <label>
+    <input type="radio" name="rotate-cube-side" value="iso" checked /> iso
+  </label>
+</p>
+
+</body>
+
+
+<script>
+
+let cube = document.querySelector('.cube');
+let radioGroup = document.querySelector('.radio-group');
+let currentClass = '';
+
+function changeSide() {
+  let checkedRadio = radioGroup.querySelector(':checked');
+  let showClass = 'show-' + checkedRadio.value;
+  if ( currentClass ) {
+    cube.classList.remove( currentClass );
+  }
+  cube.classList.add( showClass );
+  currentClass = showClass;
+}
+
+radioGroup.addEventListener( 'change', changeSide );
+
+changeSide ();
+
+
+[...document.querySelectorAll ('.face')].forEach (function (item) {
+    item.addEventListener ('click', function() {
+        console.log (item);
+    });
+});
+
+[...document.querySelectorAll ('.b333')].forEach (function (item) {
+    console.log (item);
+    item.classList.add ('selected');
+});
+
+</script>
+
+</html>
