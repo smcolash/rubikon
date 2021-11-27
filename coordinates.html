@@ -81,7 +81,7 @@ body {
   height: 100px;
   border: 4px solid black;
   line-height: 100px;
-  font-size: 40px;
+  font-size: 24px;
   font-weight: bold;
   color: black;
   text-align: center;
@@ -92,73 +92,43 @@ body {
 
 .red {
   background: red;
-  transform: rotateY(  0deg) translateZ(50px);
+  transform: rotateY(0deg) translate3d(-50px, -50px, 50px);
+  transform-style: preserve-3d;
 }
 
 .white {
   background: white;
-  transform: rotateY( 90deg) translateZ(50px);
+  transform: rotateY(90deg) translate3d(0px, -50px, 0px);
+  transform-style: preserve-3d;
 }
 
 .blue {
   background: blue;
-  transform: rotateY(180deg) translateZ(50px);
+  transform: rotateY(180deg) translate3d(50px, -50px, 50px); 
+  transform-style: preserve-3d;
 }
 
 .green {
   background: green;
-  transform: rotateY(-90deg) translateZ(50px);
+  transform: rotateY(-90deg) translate3d(0px, -50px, 100px);
+  transform-style: preserve-3d;
 }
 
 .orange {
   background: orange;
-  transform: rotateX( 90deg) translateZ(50px);
+  transform: rotateX( 90deg) translate3d(-50px, 0px, 100px);
+  transform-style: preserve-3d;
 }
 
 .yellow {
   background: yellow;
-  transform: rotateX(-90deg) translateZ(50px);
+  transform: rotateX(-90deg) translate3d(-50px, 0px, 0px);
+  transform-style: preserve-3d;
 }
 
 .unit {
   transform-style: preserve-3d;
 }
-
-.b111 { transform: translateX(-175px) translateY(-175px) translateZ(-125px); }
-.b211 { transform: translateX(-050px) translateY(-175px) translateZ(-125px); }
-.b311 { transform: translateX(+075px) translateY(-175px) translateZ(-125px); }
-
-.b121 { transform: translateX(-175px) translateY(-050px) translateZ(-125px); }
-.b221 { transform: translateX(-050px) translateY(-050px) translateZ(-125px); }
-.b321 { transform: translateX(+075px) translateY(-050px) translateZ(-125px); }
-
-.b131 { transform: translateX(-175px) translateY(+075px) translateZ(-125px); }
-.b231 { transform: translateX(-050px) translateY(+075px) translateZ(-125px); }
-.b331 { transform: translateX(+075px) translateY(+075px) translateZ(-125px); }
-
-.b112 { transform: translateX(-175px) translateY(-175px) translateZ(+000px); }
-.b212 { transform: translateX(-050px) translateY(-175px) translateZ(+000px); }
-.b312 { transform: translateX(+075px) translateY(-175px) translateZ(+000px); }
-
-.b122 { transform: translateX(-175px) translateY(-050px) translateZ(+000px); }
-.b222 { transform: translateX(-050px) translateY(-050px) translateZ(+000px); }
-.b322 { transform: translateX(+075px) translateY(-050px) translateZ(+000px); }
-
-.b132 { transform: translateX(-175px) translateY(+075px) translateZ(+000px); }
-.b232 { transform: translateX(-050px) translateY(+075px) translateZ(+000px); }
-.b332 { transform: translateX(+075px) translateY(+075px) translateZ(+000px); }
-
-.b113 { transform: translateX(-175px) translateY(-175px) translateZ(+125px); }
-.b213 { transform: translateX(-050px) translateY(-175px) translateZ(+125px); }
-.b313 { transform: translateX(+075px) translateY(-175px) translateZ(+125px); }
-
-.b123 { transform: translateX(-175px) translateY(-050px) translateZ(+125px); }
-.b223 { transform: translateX(-050px) translateY(-050px) translateZ(+125px); }
-.b323 { transform: translateX(+075px) translateY(-050px) translateZ(+125px); }
-
-.b133 { transform: translateX(-175px) translateY(+075px) translateZ(+125px); }
-.b233 { transform: translateX(-050px) translateY(+075px) translateZ(+125px); }
-.b333 { transform: translateX(+075px) translateY(+075px) translateZ(+125px); }
 
 label {
   margin-right: 10px;
@@ -183,6 +153,11 @@ label {
   <label><input type="radio" name="rotate-cube-side" value="iso" checked /> iso</label>
 </p>
 
+<p>
+<button id="UP">UP</button>
+<button id="DN">DN</button>
+</p>
+
 </body>
 
 <script>
@@ -190,16 +165,19 @@ label {
     // create the main cube
     //
     let main = $('#scene');
+
     let temp = $('<div id="cube" class="cube"></div>');
     main.append (temp);
 
     //
     // create the sub-cubes
     //
-    for (let x = 1; x < 3+1; x++) {
-        for (let y = 1; y < 3+1; y++) {
-            for (z = 1; z < 3+1; z++) {
-                let item = $('<div data-x=' + x + ' data-y=' + y + ' data-z=' + z + ' class="unit b' + x + '' + y + '' + z + '">');
+    let spacing = 110;
+    for (let x = 0; x < 3; x++) {
+        for (let y = 0; y < 3; y++) {
+            for (let z = 0; z < 3; z++) {
+                let item = $('<div data-x=' + x + ' data-y=' + y + ' data-z=' + z + ' class="unit"></div>');
+                item.css ('transform', 'translateX(' + (x-1) * spacing + 'px) translateY(' + (y-1) * spacing + 'px) translateZ(' + (z-1) * spacing + 'px)');
                 item.append ($('<div class="cube face red"></div>'));
                 item.append ($('<div class="cube face blue"></div>'));
                 item.append ($('<div class="cube face white"></div>'));
@@ -252,24 +230,51 @@ label {
         }, 2000);
     }
 
-    //setInterval (function () {
-    setTimeout (function () {
-        let slice = $('[data-x="3"][data-y="3"][data-z="3"]');
+    let rx = 0;
+    let ry = 0;
+    let rz = 0;
+
+    function rotatex (step) {
+        rx = rx + step;
+        let slice = $('[data-x="2"]');
 
         slice.each (function () {
-            console.log ($(this).css ('transform'));
+            let matrix = $(this).css ('transform');
 
-            $(this).css ('transition', 'transform 1s');
-            $(this).css('transform','translateX(-75px) translateY(75px) translateZ(125px) rotateZ(90deg)')
-            //$(this).css('transform','translateX(75px) translateY(75px) translateZ(125px) rotateZ(90deg)')
+            let x = '0';
+            let y = '0';
+            let z = '0';
 
-            console.log ($(this).css ('transform'));
+            const values = matrix.match (/matrix.*\((.+)\)/)[1].split(', ')
+            if (matrix.startsWith ('matrix3d')) {
+                x = values[12];
+                y = values[13];
+                z = values[14];
+            }
+            else if (matrix.startsWith ('matrix2d')) {
+                console.log (2);
+            }
+            else if (matrix.startsWith ('matrix')) {
+                x = values[4];
+                y = values[5];
+                z = '0';
+            }
 
-          // keep translation, update part of translation, set rotation...
-          // https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix()
+            $(this).css ('transition', 'transform 0.5s');
+
+            $(this).css ('transform', 
+                'rotate3d(1, 0, 0, ' + rx + 'deg) ' +
+                'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px');
         });
+    }
 
-    }, 1000);
+$('#UP').click (function () {
+    rotatex (+90);
+});
+
+$('#DN').click (function () {
+    rotatex (-90);
+});
 
 </script>
 
